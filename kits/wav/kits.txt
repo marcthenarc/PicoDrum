@@ -1,0 +1,32 @@
+# Slot order is the firmware's: KICK SNARE CH OH FLEX1..FLEX4.
+# The order of these lines IS the order of the library, so do not sort.
+
+# --- kit 0 ---
+Kit 1/SYN_808_KICK.wav
+Kit 1/SYN_808_SNARE.wav
+Kit 1/SYN_808_CH.wav
+Kit 1/SYN_808_OH.wav
+Kit 1/SYN_808_FLEX1.wav
+Kit 1/SYN_808_FLEX2.wav
+Kit 1/SYN_808_FLEX3.wav
+Kit 1/SYN_808_FLEX4.wav
+
+# --- kit 1 ---
+Kit 2/SYN_909_KICK.wav
+Kit 2/SYN_909_SNARE.wav
+Kit 2/SYN_909_CH.wav
+Kit 2/SYN_909_OH.wav
+Kit 2/SYN_909_FLEX1.wav
+Kit 2/SYN_909_FLEX2.wav
+Kit 2/SYN_909_FLEX3.wav
+Kit 2/SYN_909_FLEX4.wav
+
+# --- kit 2 ---
+Kit 3/SYN_DUST_KICK.wav
+Kit 3/SYN_DUST_SNARE.wav
+Kit 3/SYN_DUST_CH.wav
+Kit 3/SYN_DUST_OH.wav
+Kit 3/SYN_DUST_FLEX1.wav
+Kit 3/SYN_DUST_FLEX2.wav
+Kit 3/SYN_DUST_FLEX3.wav
+Kit 3/SYN_DUST_FLEX4.wav

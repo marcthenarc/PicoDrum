@@ -1,0 +1,16 @@
+The sounds in this folder (the WAV files in wav/, and the sample libraries
+sample_lib.bin and sample_lib.uf2 built from them) were synthesised from
+scratch by muR Lab with make_starter_kits.py. Nothing in them is sampled
+from any other recording.
+
+To the extent possible under law, muR Lab has waived all copyright and
+related or neighbouring rights to these sounds, under the Creative Commons
+CC0 1.0 Universal Public Domain Dedication:
+
+    https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+You can copy, modify, distribute and use them, including commercially,
+without asking permission and without credit.
+
+make_starter_kits.py itself is part of the firmware tools and is covered by
+the GNU GPL, version 3 or any later version, like the rest of this repository (see ../LICENSE).

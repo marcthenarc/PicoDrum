@@ -1,0 +1,66 @@
+; I2S master output on PIO — 16 bits per channel, 32 bits per frame.
+;
+; Derived from the audio_i2s program in pico-extras (Raspberry Pi, BSD-3-Clause).
+;
+; Pin assignment:
+;   side-set bit 0 = BCK    (pin base = PIN_I2S_CLOCK_BASE)
+;   side-set bit 1 = LRCK   (pin base + 1)
+;   out pins       = DIN    (PIN_I2S_DATA)
+;
+; Timing: two PIO cycles per BCK bit, 32 bits per frame, hence
+;
+;     clk_pio = 64 * Fs
+;
+; Data arrives from the FIFO as 32-bit words, shifted left (MSB first): the top
+; 16 bits go out first, in the LRCK-high half of the frame, which I2S defines
+; as the RIGHT channel. So a frame is (R << 16) | L - see mixer_render().
+
+.program audio_i2s
+.side_set 2
+
+                        ;        /--- LRCK
+                        ;        |/-- BCK
+bitloop1:               ;        ||
+    out pins, 1           side 0b10
+    jmp x-- bitloop1      side 0b11
+    out pins, 1           side 0b00
+    set x, 14             side 0b01
+
+bitloop0:
+    out pins, 1           side 0b00
+    jmp x-- bitloop0      side 0b01
+    out pins, 1           side 0b10
+public entry_point:
+    set x, 14             side 0b11
+
+% c-sdk {
+#include "hardware/clocks.h"
+
+// Configures the state machine. `data_pin` is DIN, `clock_pin_base` is BCK
+// with LRCK on the pin immediately after it.
+static inline void audio_i2s_program_init(PIO pio, uint sm, uint offset,
+                                          uint data_pin, uint clock_pin_base) {
+    pio_sm_config c = audio_i2s_program_get_default_config(offset);
+    sm_config_set_out_pins(&c, data_pin, 1);
+    sm_config_set_sideset_pins(&c, clock_pin_base);
+    // Shift left, autopull at 32 bits: one FIFO word = one stereo frame.
+    sm_config_set_out_shift(&c, false, true, 32);
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_TX);
+
+    // Sequence kept aligned with the pico-extras one: config first, then
+    // pindirs and levels, then the pinmux, and only at the end the jump to the
+    // entry point. Reordering looks harmless but is not the proven path, and
+    // this is not the place to deviate.
+    pio_sm_init(pio, sm, offset, &c);
+
+    uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
+    pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
+    pio_sm_set_pins(pio, sm, 0);
+
+    pio_gpio_init(pio, data_pin);
+    pio_gpio_init(pio, clock_pin_base);
+    pio_gpio_init(pio, clock_pin_base + 1);
+
+    pio_sm_exec(pio, sm, pio_encode_jmp(offset + audio_i2s_offset_entry_point));
+}
+%}
