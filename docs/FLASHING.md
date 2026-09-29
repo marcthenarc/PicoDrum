@@ -50,4 +50,9 @@ BOOTSEL.
 
 If the module shows `NO LIBRARY`, it has no samples yet. Load a library with
 the sample loader at [murlab.it/loader](https://murlab.it/loader), or flash the bundled kits by dragging
-`kits/sample_lib.uf2` onto the `RPI-RP2` drive, the same way as the firmware.
+`picodrum_starter_kits.uf2` (attached to every release, and the same file as
+`kits/sample_lib.uf2`) onto the `RPI-RP2` drive, the same way as the firmware.
+
+Loading a library replaces the samples only. Presets store positions in the
+library, not the sounds themselves, so a preset saved with one library plays
+whatever sits in the same positions of the next one.
