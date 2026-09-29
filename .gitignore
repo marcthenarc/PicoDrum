@@ -1,0 +1,22 @@
+# Build output, reproducible with firmware/build.sh
+firmware/build/
+firmware/build-*/
+
+# tools/build_all.sh collects the release UF2s here. They go on the GitHub
+# release, not in the tree.
+final_builds/
+
+# Editor and OS clutter
+.cache/
+__pycache__/
+.DS_Store
+.vscode/
+.idea/
+.npp-md-preview.html
+
+# Every .uf2 and .bin is a build output, except the bundled kit library,
+# which is the file a user actually flashes
+*.uf2
+*.bin
+!kits/sample_lib.uf2
+!kits/sample_lib.bin
